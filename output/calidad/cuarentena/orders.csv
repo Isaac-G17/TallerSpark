@@ -1,0 +1,4 @@
+order_id,customer_id,order_ts,status,channel,updated_at
+O00007,C9999,2026-01-17T23:52:00Z,cancelled,mobile,2026-01-17T23:52:00Z
+O00011,,2026-02-25T00:35:00Z,pending,mobile,2026-02-25T00:35:00Z
+O00025,C0478,2026-99-31T12:00:00Z,pending,mobile,2026-02-15T04:34:00Z

@@ -1,0 +1,3 @@
+product_id,product_name,category,unit_price,active
+P089,Product 89,electronics,,true
+P088,Product 88,books,-12.5,true

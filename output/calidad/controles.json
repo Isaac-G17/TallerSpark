@@ -1,0 +1,28 @@
+{
+  "lineas_elegibles": 19749,
+  "filas_detalle": 19749,
+  "lineas_distintas": 19749,
+  "grupos_parquet": 208,
+  "total_detalle": "48005814.29",
+  "total_parquet": "48005814.29",
+  "diferencia": "0.00",
+  "pedidos_distintos_antes_de_cuarentena": 20100,
+  "pedidos_vigentes": 20097,
+  "lineas_limpias": 39386,
+  "versiones_de_pedidos_actualizados": [
+    {
+      "order_id": "O00005",
+      "updated_at": "2026-03-05T12:00:00Z"
+    }
+  ],
+  "lineas_excluidas_por_estado": [
+    {
+      "status": "cancelled",
+      "count": 9756
+    },
+    {
+      "status": "pending",
+      "count": 9881
+    }
+  ]
+}
