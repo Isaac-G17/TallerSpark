@@ -6,7 +6,7 @@ La consigna y el Excel original están en `docs/`. El entorno del taller usa Pyt
 src/                 Código del taller
 data/                CSV y lotes incrementales en JSONL
 docs/                Consigna en PDF y Excel original
-resultados/punto_2/  Perfilamiento y referencias del histórico
+resultados/          Perfilamiento y referencias del histórico
 output/              Parquet y evidencia de la ejecución consolidada
 ```
 

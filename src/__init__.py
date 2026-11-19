@@ -19,7 +19,10 @@ def main():
     verificar = argumentos.parse_args().verificar_reproceso
     proyecto = Path(__file__).resolve().parents[1]
     datos = proyecto / "data"
-    configurar_entorno(proyecto)
+    try:
+        configurar_entorno(proyecto)
+    except FileNotFoundError as error:
+        argumentos.exit(1, f"{error}\n")
 
     spark = (
         SparkSession.builder
@@ -38,7 +41,7 @@ def main():
         pedidos = spark.read.csv((datos / "orders.csv").as_posix(), header=True)
         detalle = spark.read.csv((datos / "order_items.csv").as_posix(), header=True)
 
-        salida = proyecto / "resultados" / "punto_2"
+        salida = proyecto / "resultados"
         print("Perfilamiento\n".upper())
         print("Clientes perfilados\n".upper())
         perfil_clientes = perfilar(clientes, "customer_id", {"signup_date": "DATE"})
@@ -202,10 +205,21 @@ def configurar_entorno(proyecto):
         os.environ["TEMP"] = str(temporal)
         os.environ["TMP"] = str(temporal)
         os.environ.setdefault("SPARK_HOME", str(Path(pyspark.__file__).resolve().parent))
-        hadoop = proyecto / ".venv" / "hadoop" / "hadoop-3.5.0"
-        if (hadoop / "bin" / "winutils.exe").is_file():
-            os.environ["HADOOP_HOME"] = str(hadoop)
-            os.environ["PATH"] = str(hadoop / "bin") + os.pathsep + os.environ["PATH"]
+        hadoop_local = proyecto / ".venv" / "hadoop" / "hadoop-3.5.0"
+        hadoop_home = os.environ.get("HADOOP_HOME")
+        candidatos = [Path(hadoop_home), hadoop_local] if hadoop_home else [hadoop_local]
+        for hadoop in candidatos:
+            binarios = hadoop.resolve() / "bin"
+            if all((binarios / archivo).is_file() for archivo in ("winutils.exe", "hadoop.dll")):
+                os.environ["HADOOP_HOME"] = str(binarios.parent)
+                os.environ["PATH"] = str(binarios) + os.pathsep + os.environ.get("PATH", "")
+                break
+        else:
+            raise FileNotFoundError(
+                "PySpark necesita winutils.exe y hadoop.dll de Hadoop 3.5.0 en Windows. "
+                f"Instálalos en {hadoop_local / 'bin'} o configura HADOOP_HOME con la "
+                "ruta a la carpeta de Hadoop que contiene bin. Consulta README.md."
+            )
 
 
 if __name__ == "__main__":
